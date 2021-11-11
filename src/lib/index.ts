@@ -1,1 +1,2 @@
-export * from './components/server-data-grid/ServerDataGrid';
+import ServerDataGrid from './components/server-data-grid/ServerDataGrid';
+export { ServerDataGrid };
