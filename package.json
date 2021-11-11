@@ -16,7 +16,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "prepare": "yarn build"
   },
   "dependencies": {
     "@apollo/client": "^3.4.17",
