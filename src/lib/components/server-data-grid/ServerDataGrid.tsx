@@ -2,11 +2,11 @@ import React, { useCallback, useState } from 'react';
 import { Box, Paper, TablePagination } from '@mui/material';
 import ServerDataGridHeader from './ServerDataGridHeader';
 import {
-    DataGrid,
-    DataGridProps,
-    GridRowId,
-    useGridApiContext,
-    useGridState,
+  DataGrid,
+  DataGridProps,
+  GridRowId,
+  useGridApiContext,
+  useGridState,
 } from '@mui/x-data-grid';
 import { DocumentNode, useMutation, useQuery } from '@apollo/client';
 import useServerDataGridOrderBy, {
@@ -63,7 +63,8 @@ export type ServerDataGridProps<
   TableRow extends Row = Row,
   FormInputs extends Record<string, unknown> = Record<string, unknown>,
   Item extends Record<string, unknown> = Record<string, unknown>,
-  UpdateVariables extends Record<string, unknown> = Record<string, unknown>
+  UpdateVariables extends Record<string, unknown> = Record<string, unknown>,
+  InsertVariables extends Record<string, unknown> = Record<string, unknown>
 > = RowId<TableRow> &
   UseServerDataGridOrderByProps &
   Optional<UseServerDataGridFilterByProps, 'defaultFilter'> & {
@@ -81,6 +82,7 @@ export type ServerDataGridProps<
     insertItemMutation: DocumentNode;
     getItemByIdQuery: DocumentNode;
     updateItemMutation: DocumentNode;
+    getInsertMutationVariables?: (item: FormInputs) => InsertVariables;
     getUpdateMutationVariables: (item: Item) => UpdateVariables;
   };
 
@@ -89,7 +91,8 @@ function ServerDataGrid<
   TableRow extends Row = Row,
   FormInputs extends Record<string, unknown> = Record<string, unknown>,
   Item extends Record<string, unknown> = Record<string, unknown>,
-  UpdateVariables extends Record<string, unknown> = Record<string, unknown>
+  UpdateVariables extends Record<string, unknown> = Record<string, unknown>,
+  InsertVariables extends Record<string, unknown> = Record<string, unknown>
 >({
   modelName,
   columns: columnsProp,
@@ -107,13 +110,15 @@ function ServerDataGrid<
   insertItemMutation,
   getItemByIdQuery,
   updateItemMutation,
+  getInsertMutationVariables,
   getUpdateMutationVariables,
 }: ServerDataGridProps<
   GetItemsQueryData,
   TableRow,
   FormInputs,
   Item,
-  UpdateVariables
+  UpdateVariables,
+  InsertVariables
 >) {
   const history = useHistory();
   const routeMatch = useCustomRouteMatch();
@@ -187,15 +192,18 @@ function ServerDataGrid<
     onEdit,
   });
 
-  const { isInsertingItem, handleInsertItem } =
-    useServerDataGridInsertItem<FormInputs>(
-      insertItemMutation,
-      getItemsQuery,
-      showToast,
-      titleCasedModelName,
-      history,
-      path
-    );
+  const { isInsertingItem, handleInsertItem } = useServerDataGridInsertItem<
+    FormInputs,
+    InsertVariables
+  >(
+    insertItemMutation,
+    getItemsQuery,
+    showToast,
+    titleCasedModelName,
+    history,
+    path,
+    getInsertMutationVariables
+  );
 
   const { isUpdatingItem, handleUpdateItem } = useServerDataGridUpdateItem<
     Item,

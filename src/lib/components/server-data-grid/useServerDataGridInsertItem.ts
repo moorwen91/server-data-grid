@@ -6,7 +6,8 @@ import { OptionsObject, SnackbarMessage } from 'notistack';
 import { History } from 'history';
 
 export default function useServerDataGridInsertItem<
-  T extends Record<string, unknown>
+  Item extends Record<string, unknown> = Record<string, unknown>,
+  InsertVariables extends Record<string, unknown> = Record<string, unknown>
 >(
   insertItemMutation: DocumentNode,
   getItemsQuery: DocumentNode,
@@ -16,7 +17,8 @@ export default function useServerDataGridInsertItem<
   ) => string | number,
   titleCasedModelName: string,
   history: History<unknown>,
-  path: string
+  path: string,
+  getInsertMutationVariables?: (item: Item) => InsertVariables
 ) {
   const [insertItem, { loading: isInsertingItem }] = useMutation(
     insertItemMutation,
@@ -37,11 +39,13 @@ export default function useServerDataGridInsertItem<
     }
   );
   const handleInsertItem = useCallback(
-    (object: T) => {
+    (object: Item) => {
       insertItem({
-        variables: {
-          object: mapToInsertMutationPayload(object),
-        },
+        variables: getInsertMutationVariables
+          ? getInsertMutationVariables(object)
+          : {
+              object: mapToInsertMutationPayload(object),
+            },
       });
     },
     [insertItem]
