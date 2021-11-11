@@ -11,7 +11,7 @@
       "require": "./dist/server-data-grid.umd.js"
     }
   },
-  "version": "0.1.2",
+  "version": "0.1.3",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
