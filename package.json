@@ -1,6 +1,17 @@
 {
   "name": "server-data-grid",
-  "version": "0.0.0",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/server-data-grid.umd.js",
+  "module": "./dist/server-data-grid.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/server-data-grid.es.js",
+      "require": "./dist/server-data-grid.umd.js"
+    }
+  },
+  "version": "0.1.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -14,6 +25,7 @@
     "@mui/material": "^5.1.0",
     "@mui/x-data-grid": "^5.0.0-beta.7",
     "@tabler/icons": "^1.42.0",
+    "graphql": "^16.0.1",
     "lodash": "^4.17.21",
     "notistack": "^2.0.3",
     "pluralize": "^8.0.0",
@@ -26,6 +38,7 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.176",
+    "@types/node": "^16.11.7",
     "@types/pluralize": "^0.0.29",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
@@ -33,6 +46,7 @@
     "@vitejs/plugin-react": "^1.0.0",
     "typescript": "^4.3.2",
     "utility-types": "^3.10.0",
-    "vite": "^2.6.4"
+    "vite": "^2.6.4",
+    "vite-plugin-dts": "^0.9.4"
   }
 }
