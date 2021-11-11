@@ -13,8 +13,6 @@ export default defineConfig({
       fileName: (format) => `server-data-grid.${format}.js`
     },
     rollupOptions: {
-      // make sure to externalize deps that shouldn't be bundled
-      // into your library
       external: [
         "@apollo/client",
         "@emotion/react",
